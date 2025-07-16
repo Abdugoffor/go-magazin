@@ -141,17 +141,14 @@ func (s *roleService) Update(ctx context.Context, id uint, req auth_dto.UpdateRo
 func (s *roleService) Delete(ctx context.Context, id uint) error {
 	var role auth_model.Role
 
-	// Role mavjudligini tekshiramiz
 	if err := s.db.First(&role, id).Error; err != nil {
 		return err
 	}
 
-	// Avval role_permissions jadvalidan o‘chiramiz
 	if err := s.db.Where("role_id = ?", role.ID).Delete(&auth_model.RolePermission{}).Error; err != nil {
 		return err
 	}
 
-	// So‘ngra o‘sha Role ni o‘chiramiz
 	if err := s.db.Delete(&role).Error; err != nil {
 		return err
 	}
