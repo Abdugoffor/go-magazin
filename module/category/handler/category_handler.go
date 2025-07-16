@@ -24,13 +24,13 @@ func NewCategoryHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 		categoryService: category_service.NewCategoryService(db),
 	}
 
-	categoryGroup := group.Group("/category")
+	routeGroup := group.Group("/category")
 	{
-		categoryGroup.GET("", handler.All)
-		categoryGroup.GET("/:id", handler.Show)
-		categoryGroup.POST("", handler.Create)
-		categoryGroup.PUT("/:id", handler.Update)
-		categoryGroup.DELETE("/:id", handler.Delete)
+		routeGroup.GET("", handler.All)
+		routeGroup.GET("/:id", handler.Show)
+		routeGroup.POST("", handler.Create)
+		routeGroup.PUT("/:id", handler.Update)
+		routeGroup.DELETE("/:id", handler.Delete)
 	}
 }
 

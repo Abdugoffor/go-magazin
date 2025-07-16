@@ -31,7 +31,7 @@ func NewCategoryService(db *gorm.DB) CategoryService {
 func (s *categoryService) All(ctx echo.Context) (helper.PaginatedResponse[category_dto.Response], error) {
 	var categories []category_model.Category
 
-	result, err := helper.Paginate(ctx, s.db, &categories, 2)
+	result, err := helper.Paginate(ctx, s.db, &categories, 10)
 	if err != nil {
 		return helper.PaginatedResponse[category_dto.Response]{}, err
 	}

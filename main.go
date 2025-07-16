@@ -2,6 +2,9 @@ package main
 
 import (
 	"category-crud/config"
+	"category-crud/helper"
+	auth_cmd "category-crud/module/auth"
+	auth_model "category-crud/module/auth/model"
 	category_cmd "category-crud/module/category"
 	category_model "category-crud/module/category/model"
 	product_cmd "category-crud/module/product"
@@ -24,8 +27,15 @@ func main() {
 
 	router := echo.New()
 
+	router.Validator = helper.NewValidator()
+
 	category_cmd.Cmd(router, db, log.Default())
 	product_cmd.Cmd(router, db, log.Default())
+	auth_cmd.Cmd(router, db, log.Default())
+
+	if err := auth_cmd.SeedPermissions(db, router); err != nil {
+		log.Fatal("❌ Permission seed error:", err)
+	}
 
 	log.Println("🚀 Server is running on port", env.HTTPPort)
 
@@ -35,13 +45,11 @@ func main() {
 func migration(db *gorm.DB) error {
 	// log.Println("⚠️ Dropping all tables...")
 
-	// // Barcha jadvallar nomini olish
 	// tables, err := db.Migrator().GetTables()
 	// if err != nil {
 	// 	return err
 	// }
 
-	// // Har bir jadvalni o‘chirish
 	// for _, table := range tables {
 	// 	log.Printf("🗑 Dropping table: %s\n", table)
 	// 	if err := db.Migrator().DropTable(table); err != nil {
@@ -51,9 +59,14 @@ func migration(db *gorm.DB) error {
 
 	// log.Println("🔃 Running fresh migrations...")
 
-	// Endi kerakli modellaringizni qayta yaratish
 	return db.AutoMigrate(
 		&category_model.Category{},
 		&product_model.Product{},
+		&auth_model.User{},
+		&auth_model.Role{},
+		&auth_model.Permission{},
+		&auth_model.PermissionGroup{},
+		&auth_model.RoleUser{},
+		&auth_model.RolePermission{},
 	)
 }

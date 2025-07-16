@@ -31,7 +31,7 @@ func NewProductService(db *gorm.DB) ProductService {
 func (s *productService) All(ctx echo.Context) (helper.PaginatedResponse[product_dto.Response], error) {
 	var products []product_model.Product
 
-	result, err := helper.Paginate(ctx, s.db.Preload("Category"), &products, 5)
+	result, err := helper.Paginate(ctx, s.db.Preload("Category"), &products, 10)
 	if err != nil {
 		return helper.PaginatedResponse[product_dto.Response]{}, err
 	}
