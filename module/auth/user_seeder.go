@@ -53,7 +53,7 @@ func SeedPermissions(db *gorm.DB, e *echo.Echo) error {
 		perm := auth_model.Permission{
 			Name:     generatePermissionName(route.Method, route.Path),
 			Path:     fmt.Sprintf("%s:%s", route.Method, route.Path),
-			GroupID:  group.ID,
+			GroupID:  &group.ID,
 			IsActive: true,
 		}
 		if err := db.Where("path = ?", perm.Path).FirstOrCreate(&perm).Error; err != nil {
