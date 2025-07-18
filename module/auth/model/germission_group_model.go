@@ -4,7 +4,7 @@ import "time"
 
 type PermissionGroup struct {
 	ID          uint         `gorm:"primaryKey" json:"id"`
-	Name        string       `gorm:"unique;not null" json:"name"`
+	Name        string       `gorm:"not null" json:"name"`
 	IsActive    bool         `gorm:"default:true" json:"is_active"`
 	Permissions []Permission `gorm:"foreignKey:GroupID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"permissions,omitempty"`
 	CreatedAt   time.Time    `json:"created_at"`

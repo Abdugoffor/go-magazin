@@ -13,5 +13,6 @@ func Cmd(route *echo.Echo, db *gorm.DB, log *log.Logger) {
 	{
 		auth_handler.NewRoleHandler(routerGroup, db, log)
 		auth_handler.NewPermissionGroupHandler(routerGroup, db, log)
+		auth_handler.NewPermissionHandler(routerGroup, db, log)
 	}
 }

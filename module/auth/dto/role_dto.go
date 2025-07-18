@@ -17,13 +17,6 @@ type UpdateRole struct {
 	IsActive    *bool  `json:"is_active" validate:"required"`
 }
 
-type PermissionResponse struct {
-	ID       uint   `json:"id"`
-	Name     string `json:"name"`
-	Path     string `json:"path"`
-	IsActive bool   `json:"is_active"`
-}
-
 type RoleResponse struct {
 	ID          uint                 `json:"id"`
 	Name        string               `json:"name"`
