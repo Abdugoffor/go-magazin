@@ -26,6 +26,12 @@ type RoleResponse struct {
 	UpdatedAt   string               `json:"updated_at"`
 }
 
+type RoleUserResponse struct {
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	IsActive bool   `json:"is_active"`
+}
+
 func ToResponse(role auth_model.Role) RoleResponse {
 	var perms []PermissionResponse
 	for _, p := range role.Permissions {

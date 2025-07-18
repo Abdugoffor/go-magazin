@@ -22,7 +22,6 @@ type Env struct {
 	HTTPPort          int
 }
 
-// LoadEnv loads environment variables from .env file or system
 func LoadEnv() *Env {
 	err := godotenv.Load()
 	if err != nil {
@@ -44,7 +43,6 @@ func LoadEnv() *Env {
 	}
 }
 
-// getInt safely gets an integer from environment variables with fallback default
 func getInt(key string, defaultValue int) int {
 	val := os.Getenv(key)
 	if val == "" {
