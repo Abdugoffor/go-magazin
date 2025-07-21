@@ -1,7 +1,7 @@
 package product_model
 
 import (
-	category_model "category-crud/module/category/model"
+	category_model "category-crud/module/shop/category/model"
 	"time"
 )
 

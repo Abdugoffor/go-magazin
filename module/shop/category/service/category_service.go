@@ -2,8 +2,8 @@ package category_service
 
 import (
 	"category-crud/helper"
-	category_dto "category-crud/module/category/dto"
-	category_model "category-crud/module/category/model"
+	category_dto "category-crud/module/shop/category/dto"
+	category_model "category-crud/module/shop/category/model"
 	"context"
 
 	"github.com/labstack/echo/v4"

@@ -2,8 +2,8 @@ package product_handler
 
 import (
 	"category-crud/module/middleware"
-	product_dto "category-crud/module/product/dto"
-	product_service "category-crud/module/product/service"
+	product_dto "category-crud/module/shop/product/dto"
+	product_service "category-crud/module/shop/product/service"
 	"log"
 	"net/http"
 	"strconv"

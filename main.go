@@ -5,11 +5,10 @@ import (
 	"category-crud/helper"
 	auth_cmd "category-crud/module/auth"
 	auth_model "category-crud/module/auth/model"
-	category_cmd "category-crud/module/category"
-	category_model "category-crud/module/category/model"
 	"category-crud/module/middleware"
-	product_cmd "category-crud/module/product"
-	product_model "category-crud/module/product/model"
+	shop_cmd "category-crud/module/shop"
+	category_model "category-crud/module/shop/category/model"
+	product_model "category-crud/module/shop/product/model"
 	"log"
 	"strconv"
 
@@ -32,8 +31,7 @@ func main() {
 
 	router.Validator = helper.NewValidator()
 
-	category_cmd.Cmd(router, db, log.Default())
-	product_cmd.Cmd(router, db, log.Default())
+	shop_cmd.Cmd(router, db, log.Default())
 	auth_cmd.Cmd(router, db, log.Default())
 
 	if err := auth_cmd.SeedPermissions(db, router); err != nil {

@@ -2,7 +2,7 @@ package category_dto
 
 import (
 	"category-crud/helper"
-	category_model "category-crud/module/category/model"
+	category_model "category-crud/module/shop/category/model"
 )
 
 type Create struct {

@@ -1,9 +1,9 @@
 package category_handler
 
 import (
-	category_dto "category-crud/module/category/dto"
-	category_service "category-crud/module/category/service"
 	"category-crud/module/middleware"
+	category_dto "category-crud/module/shop/category/dto"
+	category_service "category-crud/module/shop/category/service"
 	"log"
 	"net/http"
 	"strconv"
@@ -25,11 +25,11 @@ func NewCategoryHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 		categoryService: category_service.NewCategoryService(db),
 	}
 
-	group.GET("/category", handler.All)
+	// group.GET("/category", handler.All) withOut middleware
 
 	routeGroup := group.Group("/category", middleware.PermissionMiddleware())
 	{
-		// routeGroup.GET("", handler.All)
+		routeGroup.GET("", handler.All)
 		routeGroup.GET("/:id", handler.Show)
 		routeGroup.POST("", handler.Create)
 		routeGroup.PUT("/:id", handler.Update)

@@ -9,6 +9,7 @@ import (
 )
 
 func Cmd(route *echo.Echo, db *gorm.DB, log *log.Logger) {
+
 	routerGroup := route.Group("/api/v1")
 	{
 		auth_handler.NewRoleHandler(routerGroup, db, log)
