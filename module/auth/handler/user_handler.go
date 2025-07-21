@@ -3,6 +3,7 @@ package auth_handler
 import (
 	auth_dto "category-crud/module/auth/dto"
 	auth_service "category-crud/module/auth/service"
+	"category-crud/module/middleware"
 	"log"
 	"net/http"
 	"strconv"
@@ -24,7 +25,7 @@ func NewUserHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 		userService: auth_service.NewUserService(db),
 	}
 
-	routeGroup := group.Group("/user")
+	routeGroup := group.Group("/user", middleware.PermissionMiddleware())
 	{
 		routeGroup.GET("", handler.All)
 		routeGroup.GET("/:id", handler.Show)

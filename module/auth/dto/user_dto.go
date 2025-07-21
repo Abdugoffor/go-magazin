@@ -26,6 +26,13 @@ type LoginUser struct {
 	Password string `json:"password" validate:"required"`
 }
 
+type RegisterUser struct {
+	Name     string `json:"name" validate:"required"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
+	IsActive bool   `json:"is_active" validate:"required"`
+}
+
 type UserResponse struct {
 	ID        uint               `json:"id"`
 	Name      string             `json:"name"`
@@ -34,6 +41,7 @@ type UserResponse struct {
 	IsActive  bool               `json:"is_active"`
 	CreatedAt string             `json:"created_at"`
 	UpdatedAt string             `json:"updated_at"`
+	Token     string             `json:"token"`
 }
 
 func ToUserResponse(user auth_model.User) UserResponse {

@@ -1,6 +1,7 @@
 package product_handler
 
 import (
+	"category-crud/module/middleware"
 	product_dto "category-crud/module/product/dto"
 	product_service "category-crud/module/product/service"
 	"log"
@@ -24,7 +25,7 @@ func NewProductHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 		productService: product_service.NewProductService(db),
 	}
 
-	productGroup := group.Group("/product")
+	productGroup := group.Group("/product", middleware.PermissionMiddleware())
 	{
 		productGroup.GET("", handler.All)
 		productGroup.GET("/:id", handler.Show)

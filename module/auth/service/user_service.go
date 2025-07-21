@@ -14,6 +14,7 @@ type UserService interface {
 	All(ctx echo.Context) (helper.PaginatedResponse[auth_dto.UserResponse], error)
 	Show(ctx context.Context, id uint) (*auth_dto.UserResponse, error)
 	Create(ctx context.Context, data auth_dto.CreateUser) (*auth_dto.UserResponse, error)
+	Register(ctx context.Context, data auth_dto.RegisterUser) (*auth_dto.UserResponse, error)
 	Update(ctx context.Context, id uint, data auth_dto.UpdateUser) (*auth_dto.UserResponse, error)
 	Delete(ctx context.Context, id uint) error
 }
@@ -100,6 +101,58 @@ func (s *userService) Create(ctx context.Context, req auth_dto.CreateUser) (*aut
 	}
 
 	response := auth_dto.ToUserResponse(user)
+	return &response, nil
+}
+
+func (s *userService) Register(ctx context.Context, req auth_dto.RegisterUser) (*auth_dto.UserResponse, error) {
+	hashedPassword, err := helper.HashPassword(req.Password)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user := auth_model.User{
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: hashedPassword,
+		IsActive: req.IsActive,
+	}
+
+	if err := s.db.Create(&user).Error; err != nil {
+		return nil, err
+
+	}
+
+	var role auth_model.Role
+
+	if err := s.db.Where("id = ?", 3).First(&role).Error; err != nil {
+		return nil, err
+	}
+
+	ur := auth_model.RoleUser{
+		UserID:   user.ID,
+		RoleID:   role.ID,
+		IsActive: true,
+	}
+
+	if err := s.db.Create(&ur).Error; err != nil {
+		return nil, err
+	}
+
+	if err := s.db.Preload("Roles").First(&user, user.ID).Error; err != nil {
+		return nil, err
+	}
+
+	token, err := helper.GenerateToken(user.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := auth_dto.ToUserResponse(user)
+
+	response.Token = token
+
 	return &response, nil
 }
 

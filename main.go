@@ -7,6 +7,7 @@ import (
 	auth_model "category-crud/module/auth/model"
 	category_cmd "category-crud/module/category"
 	category_model "category-crud/module/category/model"
+	"category-crud/module/middleware"
 	product_cmd "category-crud/module/product"
 	product_model "category-crud/module/product/model"
 	"log"
@@ -20,6 +21,8 @@ func main() {
 	env := config.LoadEnv()
 
 	db := config.InitDB(env)
+
+	middleware.SetDB(db)
 
 	if err := migration(db); err != nil {
 		log.Fatal("❌ Migration error:", err)
