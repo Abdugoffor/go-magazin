@@ -11,7 +11,7 @@ import (
 )
 
 func GenerateToken(userID uint) (string, error) {
-	jwtKey := []byte(os.Getenv("JWT_SECRET")) // moved here
+	jwtKey := []byte(os.Getenv("JWT_SECRET"))
 
 	claims := jwt.MapClaims{
 		"user_id": userID,
@@ -32,7 +32,7 @@ func GetUserFromToken(c echo.Context) (uint, error) {
 
 	claims := jwt.MapClaims{}
 	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("JWT_SECRET")), nil // moved here
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil {
@@ -45,4 +45,12 @@ func GetUserFromToken(c echo.Context) (uint, error) {
 	}
 
 	return uint(userIDFloat), nil
+}
+
+func GetUserIDFromToken(c echo.Context) (int, error) {
+	user := c.Get("user").(*jwt.Token)         // Tokenni kontekstdan olamiz
+	claims := user.Claims.(jwt.MapClaims)      // Tokenni claims (ma'lumotlar) qismiga ajratamiz
+	userID := int(claims["user_id"].(float64)) // `user_id` ni o‘qib olamiz
+
+	return userID, nil
 }

@@ -1,9 +1,9 @@
 package auth_handler
 
 import (
+	"category-crud/middleware"
 	auth_dto "category-crud/module/auth/dto"
 	auth_service "category-crud/module/auth/service"
-	"category-crud/module/middleware"
 	"log"
 	"net/http"
 	"strconv"

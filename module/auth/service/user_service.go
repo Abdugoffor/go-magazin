@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -14,9 +15,10 @@ type UserService interface {
 	All(ctx echo.Context) (helper.PaginatedResponse[auth_dto.UserResponse], error)
 	Show(ctx context.Context, id uint) (*auth_dto.UserResponse, error)
 	Create(ctx context.Context, data auth_dto.CreateUser) (*auth_dto.UserResponse, error)
-	Register(ctx context.Context, data auth_dto.RegisterUser) (*auth_dto.UserResponse, error)
 	Update(ctx context.Context, id uint, data auth_dto.UpdateUser) (*auth_dto.UserResponse, error)
 	Delete(ctx context.Context, id uint) error
+	Register(ctx context.Context, data auth_dto.RegisterUser) (*auth_dto.UserResponse, error)
+	Login(ctx context.Context, data auth_dto.LoginUser) (*auth_dto.UserResponse, error)
 }
 
 type userService struct {
@@ -136,6 +138,34 @@ func (s *userService) Register(ctx context.Context, req auth_dto.RegisterUser) (
 	}
 
 	if err := s.db.Create(&ur).Error; err != nil {
+		return nil, err
+	}
+
+	if err := s.db.Preload("Roles").First(&user, user.ID).Error; err != nil {
+		return nil, err
+	}
+
+	token, err := helper.GenerateToken(user.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response := auth_dto.ToUserResponse(user)
+
+	response.Token = token
+
+	return &response, nil
+}
+func (s *userService) Login(ctx context.Context, req auth_dto.LoginUser) (*auth_dto.UserResponse, error) {
+
+	var user auth_model.User
+
+	if err := s.db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return nil, err
 	}
 

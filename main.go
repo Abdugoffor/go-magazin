@@ -3,11 +3,12 @@ package main
 import (
 	"category-crud/config"
 	"category-crud/helper"
+	"category-crud/middleware"
 	auth_cmd "category-crud/module/auth"
 	auth_model "category-crud/module/auth/model"
-	"category-crud/module/middleware"
 	shop_cmd "category-crud/module/shop"
 	category_model "category-crud/module/shop/category/model"
+	order_model "category-crud/module/shop/order/model"
 	product_model "category-crud/module/shop/product/model"
 	"log"
 	"strconv"
@@ -69,5 +70,7 @@ func migration(db *gorm.DB) error {
 		&auth_model.PermissionGroup{},
 		&auth_model.RoleUser{},
 		&auth_model.RolePermission{},
+		&order_model.Order{},
+		&order_model.OrderItems{},
 	)
 }

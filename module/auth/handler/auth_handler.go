@@ -31,7 +31,21 @@ func NewAuthHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 }
 
 func (handler *authHandler) Login(c echo.Context) error {
-	return nil
+	ctx := c.Request().Context()
+
+	var req auth_dto.LoginUser
+
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{"error": err.Error()})
+	}
+
+	data, err := handler.authService.Login(ctx, req)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, data)
 }
 
 func (handler *authHandler) Register(c echo.Context) error {

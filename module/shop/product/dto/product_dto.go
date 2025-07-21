@@ -29,6 +29,9 @@ type Response struct {
 	CreatedAt   string                            `json:"created_at"`
 	UpdatedAt   string                            `json:"updated_at"`
 }
+type ResponseWithOrder struct {
+	Name        string `json:"name"`
+}
 
 func ToResponse(product product_model.Product) Response {
 	return Response{
@@ -43,5 +46,11 @@ func ToResponse(product product_model.Product) Response {
 		},
 		CreatedAt: helper.FormatDate(product.CreatedAt),
 		UpdatedAt: helper.FormatDate(product.UpdatedAt),
+	}
+}
+
+func ToResponseWithOrder(product product_model.Product) ResponseWithOrder {
+	return ResponseWithOrder{
+		Name:        product.Name,
 	}
 }

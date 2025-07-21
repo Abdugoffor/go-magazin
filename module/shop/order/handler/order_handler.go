@@ -1,8 +1,8 @@
-package cart_model
+package order_handler
 
 import "time"
 
-type Cart struct {
+type Order struct {
 	ID          uint   `gorm:"primaryKey"`
 	Name        string `gorm:"size:100"`
 	Description string `gorm:"size:255"`

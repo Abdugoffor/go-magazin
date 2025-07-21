@@ -1,7 +1,7 @@
 package category_handler
 
 import (
-	"category-crud/module/middleware"
+	"category-crud/middleware"
 	category_dto "category-crud/module/shop/category/dto"
 	category_service "category-crud/module/shop/category/service"
 	"log"
