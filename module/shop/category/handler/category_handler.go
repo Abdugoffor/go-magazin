@@ -25,8 +25,6 @@ func NewCategoryHandler(group *echo.Group, db *gorm.DB, log *log.Logger) {
 		categoryService: category_service.NewCategoryService(db),
 	}
 
-	// group.GET("/category", handler.All) withOut middleware
-
 	routeGroup := group.Group("/category", middleware.PermissionMiddleware())
 	{
 		routeGroup.GET("", handler.All)

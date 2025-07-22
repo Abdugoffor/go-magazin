@@ -71,6 +71,5 @@ func migration(db *gorm.DB) error {
 		&auth_model.RoleUser{},
 		&auth_model.RolePermission{},
 		&order_model.Order{},
-		&order_model.OrderItems{},
 	)
 }

@@ -2,6 +2,7 @@ package shop_cmd
 
 import (
 	category_handler "category-crud/module/shop/category/handler"
+	order_handler "category-crud/module/shop/order/handler"
 	product_handler "category-crud/module/shop/product/handler"
 	"log"
 
@@ -15,5 +16,6 @@ func Cmd(route *echo.Echo, db *gorm.DB, log *log.Logger) {
 	{
 		category_handler.NewCategoryHandler(routerGroup, db, log)
 		product_handler.NewProductHandler(routerGroup, db, log)
+		order_handler.NewOrderHandler(routerGroup, db, log)
 	}
 }

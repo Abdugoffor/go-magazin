@@ -1,46 +1,35 @@
 package order_dto
 
 import (
-	"category-crud/helper"
+	auth_dto "category-crud/module/auth/dto"
 	order_model "category-crud/module/shop/order/model"
+	product_dto "category-crud/module/shop/product/dto"
 )
 
 type OrderCreate struct {
-	ProductID int `json:"product_id" validate:"required"`
-	Quantity  int `json:"quantity" validate:"required"`
+	ProductID int `json:"product_id"`
+	Quantity  int `json:"quantity"`
 }
 
 type OrderUpdate struct {
-	ProductID int `json:"product_id" validate:"required"`
-	Quantity  int `json:"quantity" validate:"required"`
+	ProductID int `json:"product_id"`
+	Quantity  int `json:"quantity"`
 }
 
 type OrderResponse struct {
-	ID         int                  `json:"id"`
-	UserID     int                  `json:"user_id"`
-	Summ       int                  `json:"summ"`
-	Status     string               `json:"status"`
-	OrderItems []OrdetItemsResponse `json:"order_items"`
-	CreatedAt  string               `json:"created_at"`
-	UpdatedAt  string               `json:"updated_at"`
+	ID       int                   `json:"id"`
+	User     auth_dto.UserResponse `json:"user"`
+	Product  product_dto.Response  `json:"product"`
+	Quantity int                   `json:"quantity"`
+	Price    int                   `json:"price"`
 }
 
-func ToOrderResponse(order *order_model.Order) *OrderResponse {
-
-	orderItems := make([]OrdetItemsResponse, 0)
-	for _, item := range order.OrderItems {
-		orderItems = append(orderItems, *ToOrderItemsResponse(&item))
-	}
-
-	return &OrderResponse{
-		ID:         order.ID,
-		UserID:     order.UserID,
-		Summ:       order.Summ,
-		Status:     order.Status,
-		OrderItems: orderItems,
-		CreatedAt:  helper.FormatDate(order.CreatedAt),
-		UpdatedAt:  helper.FormatDate(order.UpdatedAt),
+func ToOrderResponse(order order_model.Order) OrderResponse {
+	return OrderResponse{
+		ID:       order.ID,
+		User:     auth_dto.ToUserResponse(order.User),
+		Product:  product_dto.ToResponse(order.Product),
+		Quantity: order.Quantity,
+		Price:    order.Price,
 	}
 }
-
-

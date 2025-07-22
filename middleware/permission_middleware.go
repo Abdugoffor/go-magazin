@@ -36,9 +36,9 @@ func PermissionMiddleware() echo.MiddlewareFunc {
 
 			method := c.Request().Method
 
-			path := c.Path() // Example: /api/v1/category
+			path := c.Path()
 
-			fullRoute := fmt.Sprintf("%s:%s", method, path) // Example: GET:/api/v1/category
+			fullRoute := fmt.Sprintf("%s:%s", method, path)
 
 			var user auth_model.User
 
